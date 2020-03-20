@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{% block title %}{% endblock %}</title>
+  <link href="{% static "css/style.css" %}" rel="stylesheet">
+</head>
+<body>
+  <div id="header">
+    <span class="logo">WeShare</span>
+    {% if request.user.is_authenticated %}
+      <ul class="menu">
+        <li>
+          <a href="{% url "accounts:dashboard" %}">My dashboard</a>
+        </li>
+        <li>
+          <a href="{% url "images:image_list" %}">Images</a>
+        </li>
+        <li>
+          <a href="{% url "accounts:user_list" %}">Users</a>
+        </li>
+      </ul>
+    {% endif %}
+    <span class="user">
+      {% if request.user.is_authenticated %}
+        Hello  <a href="{% url "accounts:profile" request.user.username %}"><u>{{ request.user.first_name }}</u>,</a>
+        <a href="{% url "accounts:logout" %}"><u>Logout</u></a>
+        /<a href="{% url "accounts:password_change" %}"><u>Change Password</u></a>
+      {% else %}
+        <a href="{% url "accounts:login" %}"><u>Log-in</u></a>
+      {% endif %}
+    </span>
+  </div>
+  <div id="content">
+    {% block content %}
+    {% endblock %}
+  </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+</body>
+</html>
